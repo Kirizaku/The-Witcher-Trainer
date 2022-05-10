@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{10cf2949-bbe0-4a62-9521-3153f09e0393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d7672e24-7743-49bf-844a-913df2f205f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\impl">
+      <UniqueIdentifier>{8c7bebbd-dedc-470c-983e-224b09dd0276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{c546092d-9428-449e-9dde-01e4ba19c3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{8e64a009-4e94-4233-8e26-08bf9d033c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{80cbe785-461c-4f20-834e-0860028eb8ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{680659ec-9519-48eb-a109-2f01b5359a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\fonts">
+      <UniqueIdentifier>{cfc70b54-b66a-40fe-afd9-5196d3b79337}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="..\imgui\imgui_custom.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\language.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\offsets.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\memory\memory.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\json\json.hpp">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="config\config.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imgui_impl_glfw.h">
+      <Filter>imgui\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imgui_impl_opengl3.h">
+      <Filter>imgui\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>imgui\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="license.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="..\imgui\imgui_custom.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="functions.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\language.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\memory\memory.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="config\config.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_impl_glfw.cpp">
+      <Filter>imgui\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imgui_impl_opengl3.cpp">
+      <Filter>imgui\impl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\assets\icon.png">
+      <Filter>assets</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\assets\hotkey.wav">
+      <Filter>assets</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\assets\fonts\UFL.txt">
+      <Filter>assets\fonts</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\assets\fonts\Ubuntu-Regular.ttf">
+      <Filter>assets\fonts</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\assets\fonts\Ubuntu-Bold.ttf">
+      <Filter>assets\fonts</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\LICENSE" />
+  </ItemGroup>
+</Project>
