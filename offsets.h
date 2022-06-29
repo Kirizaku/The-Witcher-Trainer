@@ -22,7 +22,8 @@ namespace globals {
 	inline uintptr_t process_mod_hook				= 0;
 	inline mem::string_t process_check				= "";
 	inline const mem::string_t kProcessName			= "witcher.exe";
-	inline const mem::string_t kModuleWitcher		= "witcher.exe";
+	inline const mem::string_t kModuleWitcherSteam	= "witcher.exe";
+	inline const mem::string_t kModuleWitcherGOG	= "witcher.EXE";
 	inline const mem::string_t kModuleHook			= "TheWitcherTrainerHook.dll";
 }
 

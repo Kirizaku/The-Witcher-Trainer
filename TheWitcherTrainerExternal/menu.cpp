@@ -51,7 +51,13 @@ void CheckProcess()
 
         if (globals::process_check == globals::kProcessName) {
             hk.is_running_ = true;
-            globals::process_mod = mem::get_module(globals::pid, globals::kModuleWitcher);
+
+            if (globals::process_mod == 0) {
+                globals::process_mod = mem::get_module(globals::pid, globals::kModuleWitcherSteam);
+                if (globals::process_mod == 0) {
+                    globals::process_mod = mem::get_module(globals::pid, globals::kModuleWitcherGOG);
+                }
+            }
             globals::process_mod_hook = mem::get_module(globals::pid, globals::kModuleHook);
 
             if (!globals::process_mod_hook) {
