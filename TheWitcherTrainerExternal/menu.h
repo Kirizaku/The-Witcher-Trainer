@@ -33,7 +33,7 @@
 #define IMGUI_WINDOW_W 860
 #define IMGUI_WINDOW_H 570
 
-constexpr auto TRAINER_VERSION = "1.0.1";
+constexpr auto TRAINER_VERSION = "1.0.2";
 
 class menu
 {

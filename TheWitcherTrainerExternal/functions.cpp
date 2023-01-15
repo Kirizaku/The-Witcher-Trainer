@@ -24,16 +24,15 @@ void Hacks::Functions()
 
         if (is_running_)
         {
-            mem::read(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kLocalPlayer), &lp_base_[0], sizeof(lp_base_[0]));
-            mem::read(globals::pid, (void*)((uintptr_t)lp_base_[0] + offsets::kLpOffset1), &lp_base_[0], sizeof(lp_base_[0]));
-            mem::read(globals::pid, (void*)((uintptr_t)lp_base_[0] + offsets::kLpOffset2), &lp_base_[0], sizeof(lp_base_[0]));
-            mem::read(globals::pid, (void*)((uintptr_t)lp_base_[0] + offsets::kLpOffset3), &lp_base_[1], sizeof(lp_base_[1]));
+            mem::read(globals::pid, (void*)((uintptr_t)globals::process_mod_hook + offsets::kLocalPlayer), &local_player, sizeof(local_player));
+            
+            uintptr_t check_value = 0;
+            mem::read(globals::pid, (void*)((uintptr_t)local_player + 0x184), &check_value, sizeof(check_value));
 
-            if (!lp_base_[1])
+            if (check_value == 1.75f)
                 continue;
 
             UnlimitedHealth();
-            UnlimitedOrens();
             UnlimitedEndurance();
             UnlimitedPoints();
             FreeCamera();
@@ -46,6 +45,7 @@ void Hacks::Functions()
                 continue;
 
             UnlimitedInventory();
+            UnlimitedOrens();
         }
     }
 }
@@ -54,15 +54,7 @@ void Hacks::UnlimitedHealth()
 {
     float write_health = 9999.0f;
     if (is_unlimited_health_) {
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpHealth), &write_health, sizeof(write_health));
-    }
-}
-
-void Hacks::UnlimitedOrens()
-{
-    int write_orens = 999999;
-    if (is_unlimited_orens_) {
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[0] + offsets::kLpOrens), &write_orens, sizeof(write_orens));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpHealth), &write_health, sizeof(write_health));
     }
 }
 
@@ -70,7 +62,7 @@ void Hacks::UnlimitedEndurance()
 {
     float write_endurance = 100.0f;
     if (is_unlimited_endurance_) {
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpEndurance), &write_endurance, sizeof(write_endurance));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpEndurance), &write_endurance, sizeof(write_endurance));
     }
 }
 
@@ -78,23 +70,34 @@ void Hacks::UnlimitedPoints()
 {
     int write_points = 50;
     if (is_unlimited_points_) {
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpBronzePoints), &write_points, sizeof(write_points));
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpSilverPoints), &write_points, sizeof(write_points));
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpGoldPoints), &write_points, sizeof(write_points));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpBronzePoints), &write_points, sizeof(write_points));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpSilverPoints), &write_points, sizeof(write_points));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpGoldPoints), &write_points, sizeof(write_points));
     }
 }
 
 void Hacks::FreeCamera()
 {
-    if (is_free_camera_) {
+    if (is_free_camera_ && !is_temp_freecamera_) {
+
+        camera_pos_xy_[0] = mem::aob_scan(globals::pid,
+            "\x3E\x00\x00\x80\x3F\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80\x3E\x00\x00\x80\x3F\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80\x3F\x00\x00\x80\x3E",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (char*)0x0, (char*)0x7FFFFFFF);
+        camera_pos_xy_[0] = camera_pos_xy_[0] - 0xF;
+        camera_pos_xy_[1] = camera_pos_xy_[0] + 0x4;
+
         int write_enable_free_camera = 1;
-        mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera1), 
+        mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera1),
             &write_enable_free_camera, sizeof(write_enable_free_camera));
-        mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera2), 
+        mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera2),
             &write_enable_free_camera, sizeof(write_enable_free_camera));
+
+        mem::write(globals::pid, (void*)((uintptr_t)camera_pos_xy_[0]), &real_time_x_, sizeof(real_time_x_));
+        mem::write(globals::pid, (void*)((uintptr_t)camera_pos_xy_[1]), &real_time_y_, sizeof(real_time_y_));
+        is_temp_freecamera_ = true;
     }
-    else {
-        int write_disable_free_camera = 0;
+    else if (!is_free_camera_ && is_temp_freecamera_) {
+        int write_disable_free_camera = 0; is_temp_freecamera_ = false;
         mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera1), 
             &write_disable_free_camera, sizeof(write_disable_free_camera));
         mem::write(globals::pid, (void*)((uintptr_t)globals::process_mod + offsets::kFreeCamera2), 
@@ -106,7 +109,7 @@ void Hacks::NoToxicity()
 {
     int write_toxicity = 0;
     if (is_toxicity_) {
-        mem::write(globals::pid, (void*)((uintptr_t)lp_base_[1] + offsets::kLpToxicity), &write_toxicity, sizeof(write_toxicity));
+        mem::write(globals::pid, (void*)((uintptr_t)local_player + offsets::kLpToxicity), &write_toxicity, sizeof(write_toxicity));
     }
 }
 
@@ -155,4 +158,10 @@ void Hacks::GameGUI()
 void Hacks::UnlimitedInventory() {
     if (is_unlimited_inventory_ && !is_temp_inventory_) { Config().SaveHookConfig(); is_temp_inventory_ = true; }
     else if (!is_unlimited_inventory_ && is_temp_inventory_) { Config().SaveHookConfig(); is_temp_inventory_ = false; }
+}
+
+void Hacks::UnlimitedOrens()
+{
+    if (is_unlimited_orens_ && !is_temp_orens_) { Config().SaveHookConfig(); is_temp_orens_ = true; }
+    else if (!is_unlimited_orens_ && is_temp_orens_) { Config().SaveHookConfig(); is_temp_orens_ = false; }
 }

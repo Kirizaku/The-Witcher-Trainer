@@ -25,12 +25,18 @@
 class Hacks
 {
 private:
+	static inline DWORD jmp_back_health;
 	static inline DWORD jmp_back_inventory;
+	static inline DWORD jmp_back_orens;
 
 	static inline bool is_hooking_ = false;
 	static inline bool is_unlimited_inventory_ = false;
+	static inline bool is_unlimited_orens_ = false;
+	static inline DWORD local_player_;
 
+	static void GetLocalPlayer();
 	static void UnlimitedInventory();
+	static void UnlimitedOrens();
 
 public:
 	void Functions();

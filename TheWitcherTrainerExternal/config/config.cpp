@@ -97,6 +97,7 @@ void Config::SaveHookConfig()
 
     j["hooking"]                            = hx.is_hooking_;
     j["enable_unlimited_inventory"]         = hx.is_unlimited_inventory_;
+    j["enable_unlimited_orens"]             = hx.is_unlimited_orens_;
 
     if (std::ofstream out{ "config\\hook.json" }; out.good())
         out << std::setw(4) << j;

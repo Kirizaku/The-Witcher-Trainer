@@ -37,10 +37,36 @@ void Patch(LPVOID src, LPCVOID dst, size_t size)
 	VirtualProtect((LPVOID)src, size, old_protect, &old_protect);
 }
 
+void __declspec(naked) Hacks::GetLocalPlayer() {
+	__asm {
+		fld dword ptr ds:[ecx + 0x54]
+		fadd dword ptr ds:[ecx + 0x48]
+		cmp dword ptr ds:[ecx + 0x184], 0x3FE00000
+		jne ex
+		mov [local_player_], ecx
+
+		ex:
+		jmp jmp_back_health
+	}
+}
+
 void __declspec(naked) Hacks::UnlimitedInventory() {
 	__asm {
-		mov dword ptr ds:[edi+0x424], 0xFF
+		mov dword ptr ds:[edi + 0x424], 0xFF
 		jmp jmp_back_inventory
+	}
+}
+
+void __declspec(naked) Hacks::UnlimitedOrens() {
+	__asm {
+		mov ecx, 0xF423F
+		cmp ecx, [esi + 0x00000A40]
+		js originalcode
+		mov[esi + 0x00000A40], ecx
+
+		originalcode:
+		mov ecx, [esi + 0x00000A40]
+		jmp jmp_back_orens
 	}
 }
 
@@ -56,11 +82,21 @@ void Hacks::Functions() {
 
 	DWORD module_witcher = (DWORD)GetModuleHandle("witcher.exe");
 
+	int local_player_size = 6;
+	DWORD local_player_health = module_witcher + 0x37A59D;
+	jmp_back_health = local_player_health + local_player_size;
+
 	int inventory_size = 6;
 	DWORD inventory = module_witcher + 0x4EEF0C;
 	jmp_back_inventory = inventory + inventory_size;
 
-	bool temp_check = false;
+	int orens_size = 6;
+	DWORD orens = module_witcher + 0x4EED5B;
+	jmp_back_orens = orens + orens_size;
+
+	bool is_temp_inventory_ = false;
+	bool is_temp_get_local_player_ = false;
+	bool is_temp_orens_ = false;
 
 	json j;
 
@@ -70,19 +106,37 @@ void Hacks::Functions() {
 		j = json::parse(l, nullptr, false, true);
 		Config().ReadBool(j, "hooking", is_hooking_);
 		Config().ReadBool(j, "enable_unlimited_inventory", is_unlimited_inventory_);
+		Config().ReadBool(j, "enable_unlimited_orens", is_unlimited_orens_);
 
 		if (!is_hooking_) break;
 
-		if (is_unlimited_inventory_ && !temp_check) {
-			Hook((LPVOID)inventory, Hacks::UnlimitedInventory, inventory_size);
-			temp_check = true;
+		if (!is_temp_get_local_player_)
+		{
+			Hook((LPVOID)local_player_health, Hacks::GetLocalPlayer, local_player_size);
+			is_temp_get_local_player_ = true;
 		}
-		else if (!is_unlimited_inventory_ && temp_check) {
+
+		if (is_unlimited_inventory_ && !is_temp_inventory_) {
+			Hook((LPVOID)inventory, Hacks::UnlimitedInventory, inventory_size);
+			is_temp_inventory_ = true;
+		}
+		else if (!is_unlimited_inventory_ && is_temp_inventory_) {
 			Patch((LPVOID)inventory, "\x8B\x8F\x24\x04\x00\x00", inventory_size);
-			temp_check = false;
+			is_temp_inventory_ = false;
+		}
+
+		if (is_unlimited_orens_ && !is_temp_orens_) {
+			Hook((LPVOID)orens, Hacks::UnlimitedOrens, orens_size);
+			is_temp_orens_ = true;
+		}
+		else if (!is_unlimited_orens_ && is_temp_orens_) {
+			Patch((LPVOID)orens, "\x8B\x8E\x40\x0A\x00\x00", orens_size);
+			is_temp_orens_ = false;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	Patch((LPVOID)inventory, "\x8B\x8F\x24\x04\x00\x00", inventory_size);
+	Patch((LPVOID)local_player_health, "\xD9\x41\x54\xD8\x41\x48", local_player_size);
+	Patch((LPVOID)orens, "\x8B\x8E\x40\x0A\x00\x00", orens_size);
 }

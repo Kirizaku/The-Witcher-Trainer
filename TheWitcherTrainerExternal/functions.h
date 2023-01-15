@@ -32,7 +32,9 @@ public:
 	static inline bool is_wire_frame_ = false;
 	static inline bool is_gui_ = false;
 
-	static inline std::array<uintptr_t, 2> lp_base_ { 0, 0 };
+	static inline uintptr_t	local_player = 0;
+
+	static inline std::array<uintptr_t, 2> camera_pos_xy_ = { 0,0 };
 
 	static inline float x_, y_ = 0.0f;
 	static inline float real_time_x_, real_time_y_ = 0.0f;
@@ -41,7 +43,9 @@ public:
 	void Functions();
 
 private:
+	bool is_temp_freecamera_ = false;
 	bool is_temp_inventory_ = false;
+	bool is_temp_orens_ = false;
 
 	void UnlimitedHealth();
 	void UnlimitedOrens();

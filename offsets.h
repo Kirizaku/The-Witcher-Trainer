@@ -34,22 +34,20 @@ namespace offsets {
 	constexpr uintptr_t kDebugMode					= 0x85068C;
 	constexpr uintptr_t kWireFrame					= 0x850510;
 	constexpr uintptr_t kGUI						= 0x850CD4;
-	constexpr uintptr_t kLocalPlayer				= 0x00DC09E4;
+#pragma endregion
+#pragma region kModuleHook
+	constexpr uintptr_t kLocalPlayer				= 0x166C4;
 #pragma endregion
 
-	constexpr uintptr_t kLpOffset1					= 0x29C;
-
-	constexpr uintptr_t kLpOffset2					= 0x4;
 	constexpr uintptr_t kLpOrens					= 0xA40;
 
-	constexpr uintptr_t kLpOffset3					= 0x24;
-	constexpr uintptr_t kLpCoordsX					= 0x28;
-	constexpr uintptr_t kLpCoordsY					= 0x2C;
-	constexpr uintptr_t kLpHealth					= 0x58;
-	constexpr uintptr_t kLpEndurance				= 0x1BC;
-	constexpr uintptr_t kLpToxicity					= 0x1C4;
-	constexpr uintptr_t kLpLevelXp					= 0x16C;
-	constexpr uintptr_t kLpBronzePoints				= 0x2A4;
-	constexpr uintptr_t kLpSilverPoints				= 0x2A8;
-	constexpr uintptr_t kLpGoldPoints				= 0x2AC;
+	constexpr uintptr_t kLpHealth					= 0x48;
+	constexpr uintptr_t kLpCoordsX					= 0x18;
+	constexpr uintptr_t kLpCoordsY					= 0x1C;
+	constexpr uintptr_t kLpEndurance				= 0x1AC;
+	constexpr uintptr_t kLpToxicity					= 0x1B4;
+	constexpr uintptr_t kLpLevelXp					= 0x15c;
+	constexpr uintptr_t kLpBronzePoints				= 0x294;
+	constexpr uintptr_t kLpSilverPoints				= 0x298;
+	constexpr uintptr_t kLpGoldPoints				= 0x29C;
 }

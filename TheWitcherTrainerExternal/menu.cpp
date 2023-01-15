@@ -148,8 +148,8 @@ void menu::Draw()
                             ImGui::Text("Y: "); 
                         }
                         else {
-                            mem::read(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsX), &hk.real_time_x_, sizeof(hk.real_time_x_));
-                            mem::read(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsY), &hk.real_time_y_, sizeof(hk.real_time_y_));
+                            mem::read(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsX), &hk.real_time_x_, sizeof(hk.real_time_x_));
+                            mem::read(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsY), &hk.real_time_y_, sizeof(hk.real_time_y_));
 
                             ImGui::Text(lang.kProcNameLabel, globals::process_check.c_str());
                             ImGui::Text(lang.kProcIdLabel, globals::pid); 
@@ -286,7 +286,7 @@ void menu::Draw()
                         if (ImGui::Button(lang.kMaxLvlLabel, ImVec2(250, 25)) || GetAsyncKeyState(st.key_bind_[9]) & 1)
                         {
                             int write_level_xp = 1275000;
-                            mem::write(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpLevelXp), &write_level_xp, sizeof(write_level_xp));
+                            mem::write(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpLevelXp), &write_level_xp, sizeof(write_level_xp));
                             PlaySound(cwd.string().c_str(), 0, SND_ASYNC);
                         }
 
@@ -294,8 +294,8 @@ void menu::Draw()
                         ImGuiCustom::KeyBind("", &st.key_bind_[11], ImVec2(150, 25), 11); ImGui::SameLine();
                         if (ImGui::Button(lang.kSvCoordsLabel, ImVec2(250, 25)) || GetAsyncKeyState(st.key_bind_[11]) & 1)
                         {
-                            mem::read(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsX), &hk.x_, sizeof(hk.x_));
-                            mem::read(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsY), &hk.y_, sizeof(hk.y_));
+                            mem::read(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsX), &hk.x_, sizeof(hk.x_));
+                            mem::read(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsY), &hk.y_, sizeof(hk.y_));
                             PlaySound(cwd.string().c_str(), 0, SND_ASYNC);
                         }
 
@@ -303,8 +303,8 @@ void menu::Draw()
                         ImGuiCustom::KeyBind("", &st.key_bind_[12], ImVec2(150, 25), 12); ImGui::SameLine();
                         if ((ImGui::Button(lang.kLoadCoordsLabel, ImVec2(250, 25)) || GetAsyncKeyState(st.key_bind_[12]) & 1) && hk.x_ != 0.0f)
                         {
-                            mem::write(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsX), &hk.x_, sizeof(hk.x_));
-                            mem::write(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsY), &hk.y_, sizeof(hk.y_));
+                            mem::write(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsX), &hk.x_, sizeof(hk.x_));
+                            mem::write(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsY), &hk.y_, sizeof(hk.y_));
                             PlaySound(cwd.string().c_str(), 0, SND_ASYNC);
                         }
 
@@ -312,8 +312,8 @@ void menu::Draw()
                         ImGuiCustom::KeyBind("", &st.key_bind_[13], ImVec2(150, 25), 13); ImGui::SameLine();
                         if ((ImGui::Button(lang.kLoadCustomCoordsLabel, ImVec2(250, 25)) || GetAsyncKeyState(st.key_bind_[13]) & 1) && hk.custom_x_ != 0.0f)
                         {
-                            mem::write(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsX), &hk.custom_x_, sizeof(hk.custom_x_));
-                            mem::write(globals::pid, (void*)((uintptr_t)hk.lp_base_[1] + offsets::kLpCoordsY), &hk.custom_y_, sizeof(hk.custom_y_));
+                            mem::write(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsX), &hk.custom_x_, sizeof(hk.custom_x_));
+                            mem::write(globals::pid, (void*)((uintptr_t)hk.local_player + offsets::kLpCoordsY), &hk.custom_y_, sizeof(hk.custom_y_));
                             PlaySound(cwd.string().c_str(), 0, SND_ASYNC);
                         }
 
@@ -342,11 +342,9 @@ void menu::Draw()
                 if (ImGui::BeginTabItem(lang.kAboutLabel))
                 {
                     ImGui::Text(lang.kVersionLabel, TRAINER_VERSION);
-                    ImGui::Text(u8"\nCopyright © 2022 Rudeus Kirigaya / Kirizaku");
+                    ImGui::Text(u8"\nCopyright © 2023 Rudeus Kirigaya / Kirizaku");
                     ImGui::Text(lang.kReportLevel);
                     ImGuiCustom::TextURL("https://github.com/Kirizaku/The-Witcher-Trainer", "https://github.com/Kirizaku/The-Witcher-Trainer");
-
-                    //ImGui::Text();
 
                     ImGui::PushFont(Ubuntu_Bold);
                     ImGui::Text(lang.kAdditionalCopyrightsLabel);
